@@ -1,0 +1,17 @@
+unique investment id had total rows after sections partitioned on first three digits of UUID. ALL total rows removed
+
+misspelling on agency name e.g "department of agraculture" and "department of agriculture". Acronyms used and full names, e.g DOL and department of labor.
+
+redundant data
+In order to make sure the agency names are all correct a combined collumn containing agency code and agency name was made with the following expression 
+"cells["Agency Code"].value +" "+ value"
+ I then applied a text facet to find outliers with different combinations of agency code and name. THis allowed tricky errors such as agency name: "The Department" had agency code 10 so could be changed to "Department of the interior". Where a conflict between agency name and code was found the code was assumed to be correct. When the codes and names were reconciled I delted the agency code fields
+
+ data in wrong fields
+some records had a description in the start date column, they were deleted.
+
+unique data
+the column called "unique project ID" was not unique, however, aside from four outlier the "project ID" column was unique. Thus I removed the duplicate data and deleted the unique porject id columnd
+
+unnamed columed
+a column at the end with no header had values for only four records in the entire dataset. It was assumed all values in this column were errors and they were deleted
