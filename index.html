@@ -3,7 +3,20 @@
 </head>
 <body>
 	<h1>TEST</h1>
+	<svg class="bchart">
+	</svg>
+	<div id="test"></div>
 	<script type="text/javascript">
-		alert("test");
+		var width = 420,
+    	barHeight = 20;
+		d3.csv("data.csv",function(error,data){
+			var nested_data = d3.nest()
+				.key(function(d) {return d["Agency Name"];})
+				.entries(data);
+			console.log(nested_data);
+		});
+		var x = d3.scale.linear()
+    		.domain([0, d3.max(data)])
+    		.range([0, width]);
 	</script>
 </body>
