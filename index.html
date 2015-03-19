@@ -1,5 +1,6 @@
 <head>
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
 </head>
 <body>
 	<h1>TEST</h1>
@@ -7,16 +8,54 @@
 	</svg>
 	<div id="test"></div>
 	<script type="text/javascript">
+		var keys =
+		{
+			plannedCost : "Planned Cost ($ M)",
+			dollarVariance : "Cost Variance ($ M)",
+			percentVariance : "Cost Variance (%)",
+			agencyName : "Agency Name"
+		};
 		var width = 420,
     	barHeight = 20;
-		d3.csv("data.csv",function(error,data){
+		d3.csv("data.csv",function(error,data)
+		{
 			var nested_data = d3.nest()
-				.key(function(d) {return d["Agency Name"];})
+				.key(function(d) {return d[keys.agencyName];})
 				.entries(data);
+			departmentOverruns(nested_data);
 			console.log(nested_data);
-		});
-		var x = d3.scale.linear()
-    		.domain([0, d3.max(data)])
+
+		 	var max = d3.max(nested_data, function(d) {return d[keys.dollarVariance]});
+		 	console.log(max);
+    		var x = d3.scale.linear(max)
+    		.domain([0,max ])
     		.range([0, width]);
+		});
+		function departmentOverruns(nested_data)
+		{
+			$.each(nested_data,function(i,agencyNode)
+			{
+				var dollarsOver = 0;
+				var plannedDollars = 0;
+				$.each(agencyNode.values, function(i,leaf)
+				{
+					var variance = parseFloat(leaf[keys.dollarVariance]);
+					if (!isNaN(variance)) 
+					{
+						dollarsOver = dollarsOver + variance; 
+					};
+
+					var cost = parseFloat(leaf[keys.plannedCost]);
+					if (!isNaN(cost)) 
+					{
+						plannedDollars = plannedDollars + cost; 
+					};
+				});
+				var percentageOver = (dollarsOver / plannedDollars) *100;
+				agencyNode[keys.dollarVariance] = dollarsOver;
+				agencyNode[keys.plannedCost] = plannedDollars;
+				agencyNode[keys.percentVariance] = percentageOver;
+			});
+		}
 	</script>
 </body>
