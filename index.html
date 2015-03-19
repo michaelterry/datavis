@@ -1,12 +1,12 @@
 <head>
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="barStyle.css">
 </head>
 <body>
-	<h1>TEST</h1>
-	<svg class="bchart">
-	</svg>
-	<div id="test"></div>
+	<h1>Cost OverRuns by Agency</h1>
+	<div class="bchart">
+	</div>
 	<script type="text/javascript">
 		var keys =
 		{
@@ -17,6 +17,7 @@
 		};
 		var width = 420,
     	barHeight = 20;
+
 		d3.csv("data.csv",function(error,data)
 		{
 			var nested_data = d3.nest()
@@ -24,13 +25,34 @@
 				.entries(data);
 			departmentOverruns(nested_data);
 			console.log(nested_data);
+			drawBarChart(nested_data,keys.percentVariance);
 
-		 	var max = d3.max(nested_data, function(d) {return d[keys.dollarVariance]});
+		});
+
+		function drawBarChart(data,key)
+		{
+			//debugging Dept of labor
+			$.each(data[3].values, function (i,d) {
+				console.log(d[key]+" "+i);
+			});
+
+
+			var max = d3.max(data, function(d) {return d[key]});
+			var min = d3.min(data, function(d) {return d[key]});
+
 		 	console.log(max);
     		var x = d3.scale.linear(max)
-    		.domain([0,max ])
+    		.domain([min,max ])
     		.range([0, width]);
-		});
+    		
+    		var chart = d3.select(".bchart");
+			var bar = chart.selectAll("div");
+			bar.data(data)
+				.enter().append("div")
+			    .style("width", function(d) { return x(d[key])  + "px"; })
+			    .text(function(d) { return d.key + d[key]; });
+		}
+
 		function departmentOverruns(nested_data)
 		{
 			$.each(nested_data,function(i,agencyNode)

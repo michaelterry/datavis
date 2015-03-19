@@ -15,3 +15,6 @@ the column called "unique project ID" was not unique, however, aside from four o
 
 unnamed columed
 a column at the end with no header had values for only four records in the entire dataset. It was assumed all values in this column were errors and they were deleted
+
+extreme oultiers
+one proejct for sql it modernisation was given a 300 million dollar overrun, this was assumed to be a mistaek and removed
