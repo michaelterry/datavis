@@ -1,11 +1,23 @@
 
 
-.bchart div {
+.bchart div 
+{
   font: 10px sans-serif;
   background-color: steelblue;
   text-align: right;
   padding: 3px;
   margin: 1px;
   color: white;
+}
+
+.bchart .label
+{
+	opacity: 0;
+	transition: opacity 0.5s;
+}
+
+.bchart .bar:hover .label
+{
+	opacity: 1;
 }
 
