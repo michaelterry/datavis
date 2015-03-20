@@ -1,6 +1,6 @@
 
 
-.bchart div 
+.bchart .bar 
 {
   font: 10px sans-serif;
   background-color: steelblue;
@@ -10,14 +10,27 @@
   color: white;
 }
 
-.bchart .label
+.bchart .nlabel
 {
 	opacity: 0;
 	transition: opacity 0.5s;
 }
 
-.bchart .bar:hover .label
+.bchart .bar:hover .nlabel
 {
 	opacity: 1;
 }
 
+.bchart .barName
+{
+	width:20rem;
+	font-size: 10px;
+}
+.bchart .barCont *
+{
+	display: inline-block;
+}
+.myTitle
+{
+	text-align: center;
+}
