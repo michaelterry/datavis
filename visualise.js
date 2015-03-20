@@ -49,7 +49,13 @@ function drawTreeMap(data,key,unit,colorKey)
 			var parent = "Root";
 			var overRun = parseFloat(value[key]);
 			var color = parseFloat(value[colorKey]);
+			if(overRun<0||color<0)
+			{
+				color = 0;
+				overRun = 0;
+			}
 			var row = [title,parent,overRun,color];
+
 			treeArray[treeArray.length] = row;
 		});
 		
@@ -59,7 +65,11 @@ function drawTreeMap(data,key,unit,colorKey)
 		{
 			headerHeight: 15,
 			fontColor: 'black',
-			generateTooltip: makeToolTips
+			generateTooltip: makeToolTips,
+			minColor: '#0a0',
+          	midColor: '#aaa',
+          	maxColor: '#a00',
+          	showScale:true
 		});
 		function makeToolTips (row,size,color)
 		{
@@ -70,14 +80,17 @@ function drawTreeMap(data,key,unit,colorKey)
 			{
 				title = point[keys.investTitle];
 				desc = point[keys.description];
-				overDollar = point[keys.dollarVariance];
+				overDollar = gvisData.getValue(row, 2);
+				overPctg = gvisData.getValue(row, 3);
 			}
 
 			//html = "<div class='tooltip'>"+
-			html = 	'<div style="background:#fd9; padding:10px; border-style:solid">' +
+			html = 	'<div style="background:#fd9; padding:10px; border-style:solid; border-width:1px">' +
 					'<span style="font-family:Courier"><b>' + title +
    					'</b></span><br>' +
-   					'<span>' +desc+'</span></div>';
+   					'<span>' +desc+'</span><br />'+
+   					'<span><b><em>Overbudget by '+overPctg+'% costing $'+overDollar+' million</em></b></span>'+
+   					'</div>';
 			//"</div>";
 			return html;
 		}
